@@ -20,7 +20,7 @@ Up to this point, you've gotten your feet wet by working on a bunch of small Pyt
 
 * Create the REPL command parser in `adv.py` which allows the player to move to rooms
   in the four cardinal directions.
-* Fill out Player and Room classes in `player.py` and `room.py`
+[X] Fill out Player and Room classes in `player.py` and `room.py`
 
 ### Day 2 MVP
 
