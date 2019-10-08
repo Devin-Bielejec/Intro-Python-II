@@ -62,27 +62,17 @@ def startAdventure():
         
         print(current_room.name)    
         print(current_room.description)
-        print("Your inventory:\n")
-        for invItem in newPlayer.inventory:
-            print(invItem.name)
+
         print("The items in the room are: ")
         
         for item in current_room.items:
             print("{item} ({des})\n".format(item=item.name, des=item.description))
 
-        #Adding an item to the player inventory
-        userInputItemAdd = input("Do you want to add any items to your inventory? get [itemName] \n")
-        while userInputItemAdd.split(" ")[0] == "get" or userInputItemAdd.split(" ") == "take":
-            if userInputItemAdd.split(" ")[1] in current_room.itemsNames:
-                itemIndex = current_room.itemsNames.index(userInputItemAdd.split(" ")[1])
-                newPlayer.addItem(current_room.items[itemIndex])
-                current_room.removeItem(current_room.items[itemIndex])
-            else:
-                print("That item is not in the room!")
-            userInputItemAdd = input("Do you want to add any items to your inventory? get [itemName] \n")
-        
         userInput = input("Which way will you go? [n, s, e, w, or q to quit]:\n\n\n\n")
         
+        commands = ["i","b"]
+
+        #Navigation Start
         map = {
             "Outside Cave Entrance": ["n"],
             "Foyer": ["s","n","e"],
@@ -100,11 +90,38 @@ def startAdventure():
                 current_room = room[current_room.name].e_to
             elif userInput == "w":
                 current_room = room[current_room.name].w_to
-        else:
-            print("You cannot go that way, so you're back at the ")
+        elif userInput == "i":
+            print("Your inventory:\n")
+            for invItem in newPlayer.inventory:
+                print(invItem.name)
 
+            roomItemNames = [x.name for x in current_room.items]
+            inventoryItemNames = [x.name for x in newPlayer.inventory]
+            
+            userInputItemAdd = input("Do you want to change your inventory? \n")
+            method = userInputItemAdd.split(" ")[0]
+            itemToChange = userInputItemAdd.split(" ")[1]
+
+            if method == "get" or method == "take":
+                if itemToChange in roomItemNames:
+                    itemIndex = roomItemNames.index(itemToChange)
+                    newPlayer.addItem(current_room.items[itemIndex])
+                    current_room.removeItem(current_room.items[itemIndex])
+                else:
+                    print("That item is not in the room, so you cannot take it!")
+            elif method == "drop" or method == "remove":
+                if itemToChange in inventoryItemNames:
+                    itemIndex = inventoryItemNames.index(itemToChange)
+                    current_room.addItem(newPlayer.inventory[itemIndex])
+                    newPlayer.removeItem(newPlayer.inventory[itemIndex])
+                else:
+                    print("That item is not in your inventory, so you cannot drop it!")
+        else:
+            print("Incorrect Command!")
+
+        #Adding an item to the player inventory
         
-        
+
         if userInput == "q":
             end = True
 
