@@ -1,24 +1,24 @@
 from room import Room
 from player import Player
-
+from item import Item
 # Declare all the rooms
 room = {
     'Outside Cave Entrance':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons", ["Fork"]),
+                     "North of you, the cave mount beckons", [Item("Fork", "It has unbelievable Power!")]),
 
     'Foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east.""", ["Spoon"]),
+passages run north and east.""", [Item("Spoon", "No other weapon like it!")]),
 
     'Grand Overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm.""", ["Knife"]),
+the distance, but there is no way across the chasm.""", [Item("Knife", "KEKEKEKEKE NIFE")]),
 
     'Narrow Passage':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air.""", ["Pot"]),
+to north. The smell of gold permeates the air.""",[Item("Pot", "This pot can do all your cooking")]),
 
     'Treasure Chamber': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south.""", ["Button"]),
+earlier adventurers. The only exit is to the south.""", [Item("Button", "Better than buttons")]),
 }
 
 
@@ -62,21 +62,21 @@ def startAdventure():
         
         print(current_room.name)    
         print(current_room.description)
-        print("Your inventory: {i}".format(i=newPlayer.inventory))
+        print("Your inventory:\n")
+        for invItem in newPlayer.inventory:
+            print(invItem.name)
         print("The items in the room are: ")
-        for item in current_room.items:
-            print("{item}\n".format(item=item))
         
+        for item in current_room.items:
+            print("{item} ({des})\n".format(item=item.name, des=item.description))
+
         #Adding an item to the player inventory
         userInputItemAdd = input("Do you want to add any items to your inventory? get [itemName] \n")
-
         while userInputItemAdd.split(" ")[0] == "get" or userInputItemAdd.split(" ") == "take":
-            if userInputItemAdd.split(" ")[1] in current_room.items:
-                print(newPlayer.inventory)
-                newPlayer.addItem(userInputItemAdd.split(" ")[1])
-                current_room.removeItem(userInputItemAdd.split(" ")[1])
-                print("Here")
-                print(newPlayer.inventory)
+            if userInputItemAdd.split(" ")[1] in current_room.itemsNames:
+                itemIndex = current_room.itemsNames.index(userInputItemAdd.split(" ")[1])
+                newPlayer.addItem(current_room.items[itemIndex])
+                current_room.removeItem(current_room.items[itemIndex])
             else:
                 print("That item is not in the room!")
             userInputItemAdd = input("Do you want to add any items to your inventory? get [itemName] \n")
