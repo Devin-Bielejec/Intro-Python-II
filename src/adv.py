@@ -2,7 +2,6 @@ from room import Room
 from player import Player
 
 # Declare all the rooms
-
 room = {
     'Outside Cave Entrance':  Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
@@ -52,45 +51,42 @@ newPlayer = Player("Outside Cave Entrance")
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-
-end = False
-start = True
-while end == False:
-
-    if start == True:
-        currentRoom = room[newPlayer.room]
-        start = False
-    print(currentRoom.name)    
-    print(currentRoom.description)
-
-    userInput = input("Which way will you go? [n, s, e, w, or q to quit]:\n\n\n\n\n\n\n\n\n")
-    
-    map = {
-        "Outside Cave Entrance": ["n"],
-        "Foyer": ["s","n","e"],
-        "Grand Overlook": ["s"],
-        "Narrow Passage":["w","n"],
-        "Treasure Chamber": ["s"]
-    }
-
-    if userInput in map[newPlayer.room]:
-        print("hi")
-        if userInput == "n":
-            print(room[currentRoom.name].n_to)
-            currentRoom = room[currentRoom.name].n_to
-        elif userInput == "s":
-            currentRoom = room[currentRoom.name].s_to
-        elif userInput == "e":
-            currentRoom = room[currentRoom.name].e_to
-        elif userInput == "w":
-            currentRoom = room[currentRoom.name].w_to
+def startAdventure():
+    end = False
+    start = True
+    while end == False:
+        if start == True:
+            current_room = room[newPlayer.current_room]
+            start = False
         
-        print("Heading to {c}".format(c=currentRoom.name))
+        print(current_room.name)    
+        print(current_room.description)
 
-    else:
-        "You cannot go that way!"
+        userInput = input("Which way will you go? [n, s, e, w, or q to quit]:\n\n\n\n")
+        
+        map = {
+            "Outside Cave Entrance": ["n"],
+            "Foyer": ["s","n","e"],
+            "Grand Overlook": ["s"],
+            "Narrow Passage":["w","n"],
+            "Treasure Chamber": ["s"]
+        }
 
-    
-    
-    if userInput == "q":
-        end = True
+        if userInput in map[current_room.name]:
+            if userInput == "n":
+                current_room = room[current_room.name].n_to
+            elif userInput == "s":
+                current_room = room[current_room.name].s_to
+            elif userInput == "e":
+                current_room = room[current_room.name].e_to
+            elif userInput == "w":
+                current_room = room[current_room.name].w_to
+        else:
+            print("You cannot go that way, so you're back at the ")
+
+        
+        
+        if userInput == "q":
+            end = True
+
+startAdventure()
