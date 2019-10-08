@@ -68,18 +68,19 @@ def startAdventure():
             print("{item}\n".format(item=item))
         
         #Adding an item to the player inventory
-        userInputItemAdd = input("Do you want to add any items to your inventory? If so, state the item and if not type b to go back:")
+        userInputItemAdd = input("Do you want to add any items to your inventory? get [itemName] \n")
 
-        while userInputItemAdd != "b":
-            if userInputItemAdd in current_room.items:
+        while userInputItemAdd.split(" ")[0] == "get" or userInputItemAdd.split(" ") == "take":
+            if userInputItemAdd.split(" ")[1] in current_room.items:
                 print(newPlayer.inventory)
-                newPlayer.addItem(userInputItemAdd)
+                newPlayer.addItem(userInputItemAdd.split(" ")[1])
+                current_room.removeItem(userInputItemAdd.split(" ")[1])
                 print("Here")
                 print(newPlayer.inventory)
             else:
                 print("That item is not in the room!")
-            userInputItemAdd = input("Do you want to add any items to your inventory? If so, state the item and if not type b to go back:")
-
+            userInputItemAdd = input("Do you want to add any items to your inventory? get [itemName] \n")
+        
         userInput = input("Which way will you go? [n, s, e, w, or q to quit]:\n\n\n\n")
         
         map = {
