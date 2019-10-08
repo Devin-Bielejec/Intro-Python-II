@@ -7,3 +7,8 @@ class Player():
 
     def addItem(self, item):
         self.inventory.append(item)
+        item.on_take()
+
+    def removeItem(self, item):
+        self.inventory.remove(item)
+        item.on_drop()
