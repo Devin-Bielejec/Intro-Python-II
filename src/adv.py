@@ -40,8 +40,7 @@ def startAdventure():
             newPlayer = Player(room["outside"])
             start = False
         print("\n")
-        print(newPlayer.room.name)
-        print(newPlayer.room.description)
+        print(newPlayer.room)
         print("\n")
         if (len(newPlayer.room.items) == 0):
             print("There are no items in the room")
@@ -71,29 +70,26 @@ def startAdventure():
                 inventoryItemNames = [x.name for x in newPlayer.inventory]
 
                 userInputItemAdd = input(
-                    "Your options: 'Get <itemName>' \n 'Take <itemName> \n 'Drop <itemName> \n 'Remove <itemName>? \n")
+                    "Your options: \n'Get <itemName>' \n 'Take <itemName> \n 'Drop <itemName> \n 'Remove <itemName>? \n")
 
                 method = userInputItemAdd.split(" ")[0]
                 itemToChange = userInputItemAdd.split(" ")[1]
-                print(method, itemToChange, "awoeifjaoweijf", roomItemNames)
+
                 if method == "get" or method == "take":
                     if itemToChange in roomItemNames:
-                        print("here")
                         itemIndex = roomItemNames.index(itemToChange)
                         newPlayer.addItem(newPlayer.room.items[itemIndex])
-                        newPlayer.room.removeItem(
-                            newPlayer.room.items[itemIndex])
                     else:
                         print("That item is not in the room, so you cannot take it!")
                 elif method == "drop" or method == "remove":
                     if itemToChange in inventoryItemNames:
                         itemIndex = inventoryItemNames.index(itemToChange)
-                        current_room.addItem(newPlayer.inventory[itemIndex])
-                        newPlayer.room.removeItem(
-                            newPlayer.inventory[itemIndex])
+                        newPlayer.removeItem(newPlayer.inventory[itemIndex])
                     else:
                         print(
                             "That item is not in your inventory, so you cannot drop it!")
+                else:
+                    print("Incorrect command!\n\n")
             else:
                 print("Incorrect command!\n\n")
         except:

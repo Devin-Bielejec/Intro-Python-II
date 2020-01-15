@@ -13,3 +13,6 @@ class Room():
 
     def removeItem(self, item):
         self.items.remove(item)
+
+    def __str__(self):
+        return f"{self.name}\n{self.description}\n\n"

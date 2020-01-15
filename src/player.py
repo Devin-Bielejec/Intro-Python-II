@@ -9,8 +9,10 @@ class Player():
 
     def addItem(self, item):
         self.inventory.append(item)
+        self.room.removeItem(item)
         item.on_take()
 
     def removeItem(self, item):
         self.inventory.remove(item)
+        self.room.addItem(item)
         item.on_drop()
