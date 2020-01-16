@@ -33,70 +33,44 @@ room['treasure'].s_to = room['narrow']
 
 
 def startAdventure():
-    end = False
     start = True
-    while end == False:
-        if start == True:
-            newPlayer = Player(room["outside"])
-            start = False
-        print("\n")
-        print(newPlayer.room)
-        print("\n")
-        if (len(newPlayer.room.items) == 0):
-            print("There are no items in the room")
+    newPlayer = Player(room["outside"])
+    while start == True:
+        #Description
+        print(newPlayer.currentRoom)
+        #Items in the room
+        print(newPlayer.currentRoom.getItemsString())
+        #Possible Exits from the room
+        print(newPlayer.currentRoom.getExitsString())
+        #The player's item if they have any
+        print(newPlayer)
+
+        cmd = input(
+            """Which way will you go? [n, s, e, w, or q to quit (or i for inventory)]:
+            Your options:
+            get <itemName>
+            drop <itemName>\n 
+            """).lower()
+
+        directions = ["n", "s", "e", "w"]
+        gets = newPlayer.currentRoom.gets()
+        drops = newPlayer.drops()
+        print(gets, drops)
+        if cmd == "q":
+            print("GAME OVER")
+            break
+        if cmd in directions:
+            newPlayer.travel(cmd)
+        elif cmd in gets:
+            itemIndex = gets.index(cmd)
+            newPlayer.addItem(newPlayer.currentRoom.items[itemIndex])
+        elif cmd in drops:
+            itemIndex = drops.index(cmd)
+            newPlayer.removeItem(newPlayer.inventory[itemIndex])
         else:
-            print("The items in the room are: ")
-            for itemInstance in newPlayer.room.items:
-                print(f"  {itemInstance.name} ({itemInstance.description})\n")
+            print("Incorrect Command!")
 
-        userInput = input(
-            "Which way will you go? [n, s, e, w, or q to quit (or i for inventory)]:\n\n\n\n")
-
-        try:
-            if userInput == "n":
-                newPlayer.room = newPlayer.room.n_to
-            elif userInput == "s":
-                newPlayer.room = newPlayer.room.s_to
-            elif userInput == "e":
-                newPlayer.room = newPlayer.room.e_to
-            elif userInput == "w":
-                newPlayer.room = newPlayer.room.w_to
-            elif userInput == "i":
-                print("Your inventory:\n")
-                for invItem in newPlayer.inventory:
-                    print(f"{invItem.name}\n")
-
-                roomItemNames = [x.name for x in newPlayer.room.items]
-                inventoryItemNames = [x.name for x in newPlayer.inventory]
-
-                userInputItemAdd = input(
-                    "Your options: \n'Get <itemName>' \n 'Take <itemName> \n 'Drop <itemName> \n 'Remove <itemName>? \n")
-
-                method = userInputItemAdd.split(" ")[0]
-                itemToChange = userInputItemAdd.split(" ")[1]
-
-                if method == "get" or method == "take":
-                    if itemToChange in roomItemNames:
-                        itemIndex = roomItemNames.index(itemToChange)
-                        newPlayer.addItem(newPlayer.room.items[itemIndex])
-                    else:
-                        print("That item is not in the room, so you cannot take it!")
-                elif method == "drop" or method == "remove":
-                    if itemToChange in inventoryItemNames:
-                        itemIndex = inventoryItemNames.index(itemToChange)
-                        newPlayer.removeItem(newPlayer.inventory[itemIndex])
-                    else:
-                        print(
-                            "That item is not in your inventory, so you cannot drop it!")
-                else:
-                    print("Incorrect command!\n\n")
-            else:
-                print("Incorrect command!\n\n")
-        except:
-            print("Incorrect command!\n\n")
-
-        if userInput == "q":
-            end = True
+        
 
 
 startAdventure()
