@@ -38,10 +38,6 @@ def startAdventure():
     while start == True:
         #Description
         print(newPlayer.currentRoom)
-        #Items in the room
-        print(newPlayer.currentRoom.getItemsString())
-        #Possible Exits from the room
-        print(newPlayer.currentRoom.getExitsString())
         #The player's item if they have any
         print(newPlayer)
 
@@ -55,7 +51,7 @@ def startAdventure():
         directions = ["n", "s", "e", "w"]
         gets = newPlayer.currentRoom.gets()
         drops = newPlayer.drops()
-        print(gets, drops)
+
         if cmd == "q":
             print("GAME OVER")
             break
