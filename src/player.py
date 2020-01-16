@@ -7,18 +7,22 @@ class Player():
         self.currentRoom = startingRoom
         self.inventory = []
 
-    def drops(self):
-        return [f"drop {item.name.lower()}" for item in self.inventory]
+    def addItem(self, itemName):
+        #Check if item is in room to add
+        for roomItem in self.currentRoom.items:
+            if roomItem.name.lower() == itemName:
+                self.inventory.append(roomItem)
+                roomItem.on_take()
+                self.currentRoom.removeItem(roomItem)
+        else:
+            print("Not possible yo")
 
-    def addItem(self, item):
-        self.inventory.append(item)
-        item.on_take()
-        self.currentRoom.removeItem(item)
-
-    def removeItem(self, item):
-        self.inventory.remove(item)
-        item.on_drop()
-        self.currentRoom.addItem(item)
+    def removeItem(self, itemName):
+        for inventoryItem in self.inventory:
+            if inventoryItem.name.lower() == itemName:
+                self.inventory.remove(inventoryItem)
+                inventoryItem.on_drop()
+                self.currentRoom.addItem(inventoryItem)
 
     def travel(self, direction):
         nextRoom = self.currentRoom.getRoomInDirection(direction)

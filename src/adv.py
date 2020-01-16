@@ -38,6 +38,10 @@ def startAdventure():
     while start == True:
         #Description
         print(newPlayer.currentRoom)
+        #Room items
+        print(newPlayer.currentRoom.getItemsString())
+        #Room Exits
+        print(newPlayer.currentRoom.getExitsString())
         #The player's item if they have any
         print(newPlayer)
 
@@ -49,20 +53,19 @@ def startAdventure():
             """).lower()
 
         directions = ["n", "s", "e", "w"]
-        gets = newPlayer.currentRoom.gets()
-        drops = newPlayer.drops()
 
         if cmd == "q":
             print("GAME OVER")
             break
         if cmd in directions:
             newPlayer.travel(cmd)
-        elif cmd in gets:
-            itemIndex = gets.index(cmd)
-            newPlayer.addItem(newPlayer.currentRoom.items[itemIndex])
-        elif cmd in drops:
-            itemIndex = drops.index(cmd)
-            newPlayer.removeItem(newPlayer.inventory[itemIndex])
+        elif cmd.split(" ")[0] == "get":
+            newPlayer.addItem(cmd.split(" ")[1])
+        elif cmd.split(" ")[0] == "drop":
+            newPlayer.removeItem(cmd.split(" ")[1])
+        elif cmd == "JonathanIsTheBest":
+            print("Game Won")
+            break
         else:
             print("Incorrect Command!")
 
